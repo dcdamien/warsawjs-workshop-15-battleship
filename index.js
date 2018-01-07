@@ -1,125 +1,110 @@
 'use strict';
 
-const gameboardArray = [
-	{
-		name: 'Gameboard 1',
-		array: [
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 1, 0, 0, 1, 1, 1, 1, 1, 0],
-			[0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 1, 1, 0, 1, 1, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 1, 1, 0, 0, 0, 0, 0, 0, 0],
-		]
-	}, {
-		name: 'Gameboard 2',
-		array: [
-			[0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 1, 0, 0, 0, 1, 0, 0, 0, 0],
-			[0, 1, 0, 0, 0, 1, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 1, 1, 1, 1, 1, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-		]
-	}
-];
-
-console.log(gameboardArray[0].array);
+const gameboardArray = [{
+  name: 'Gameboard 1',
+  array: [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 0, 0, 1, 1, 1, 1, 1, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 1, 1, 0, 1, 1, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+  ]
+}, {
+  name: 'Gameboard 2',
+  array: [
+    [0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0, 1, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0, 1, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 1, 1, 1, 1, 1, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ]
+}];
 
 class BaseElement {
-	createElement() {
-		//throw new Error('Not implemented');
-		console.error('Not implemented');
+  createElement() {
+    console.error('Not implemented');
+  }
 
-	}
-
-	getElement() {
+  getElement() {
     return this.elementState.element;
-	}
+  }
 
-	initialize() {
-
-	}
+  initialize() {}
 
   setElement() {
     this.elementState = {
       element: this.createElement()
     }
-
     this.initialize();
-
     return this.getElement();
   }
 }
 
 class Cell extends BaseElement {
-	constructor({ isShip, location, gameboard }) {
-		super();
-		this.isShip = isShip;
+  constructor({
+    isShip,
+    location,
+    gameboard
+  }) {
+    super();
+    this.isShip = isShip;
     this.location = location;
-		this.state = 'unknown';
-		this.onClick = this.fire;
+    this.state = 'unknown';
+    this.onClick = this.fire;
     this.gameboard = gameboard;
-	}
+  }
 
-	createElement() {
-		const element = document.createElement('div');
-		element.addEventListener('click', this.onClick.bind(this));
+  createElement() {
+    const element = document.createElement('div');
+    element.addEventListener('click', this.onClick.bind(this));
+    return element;
+  }
 
-		return element;
-	}
-
-	setState(state) {
-		this.state = state;
+  setState(state) {
+    this.state = state;
     this.refresh();
-	}
+  }
 
-	refresh() {
-		this.getElement().className = 'cell-' + this.state;
-		//this.getElement().className = `cell-${this.state}`;
-	}
+  refresh() {
+    this.getElement().className = 'cell-' + this.state;
+  }
 
-	fire() {
-    //if (this.isShip === true) {
+  fire() {
     if (this.isShip) {
       if (this.state === 'unknown') {
-      this.gameboard.score += 1;
+        this.gameboard.score += 1;
       }
       gameResult.innerHTML = '';
-
-      //while (gameResult.firstChild) {
-      //  gameResult.removeChild(gameResult.firstChild);
-      //}
-
       gameResult.append(`${this.gameboard.score}/${this.gameboard.totalScore}`);
-
       this.setState('hit');
     } else {
       this.setState('miss');
     }
-	}
+  }
 
-	initialize() {
-		this.refresh();
-	}
-
+  initialize() {
+    this.refresh();
+  }
 }
 
 class Gameboard extends BaseElement {
-	constructor({ size }) {
-		super();
-
+  constructor({
+    size
+  }) {
+    super();
     this.cells = [];
-		this.rowNumber = size;
-		this.columnNumber = size;
+    this.rowNumber = size;
+    this.columnNumber = size;
     this.fleet = gameboardArray[Math.floor(Math.random() * gameboardArray.length)]
     this.score = 0;
     this.totalScore = this.getTotalScore(this.fleet);
@@ -134,43 +119,41 @@ class Gameboard extends BaseElement {
       }
     }
     gameResult.append(`${this.score}/${this.totalScore}`)
-	}
+  }
 
-	createElement() {
+  createElement() {
     const gameboard = document.createElement('div');
     gameboard.className = 'gameboard';
 
-    for(let rowIndex = 0; rowIndex < this.rowNumber; ++rowIndex) {
-
+    for (let rowIndex = 0; rowIndex < this.rowNumber; ++rowIndex) {
       const row = document.createElement('div');
       row.className = 'board-row';
 
       for (let columnIndex = 0; columnIndex < this.columnNumber; ++columnIndex) {
         const cell = this.cells[rowIndex * this.columnNumber + columnIndex];
-
         row.appendChild(cell.setElement());
       }
       gameboard.appendChild(row);
     }
-    return gameboard ;
-	}
+    return gameboard;
+  }
 
-	getTotalScore(fleet) {
+  getTotalScore(fleet) {
     let total = 0;
-    //fleet.array.forEach(function(row) {
-
-    //});
 
     fleet.array.forEach((row) => {
-      total += row.filter((x) => { return x === 1 }).length
+      total += row.filter((x) => {
+        return x === 1
+      }).length
     });
 
     return total;
-
-	}
+  }
 }
 
 const gameboardContainer = document.getElementById('gameboardContainer');
 const gameResult = document.getElementById('gameResult')
-const gameboard = new Gameboard({ size: 10 });
+const gameboard = new Gameboard({
+  size: 10
+});
 gameboardContainer.appendChild(gameboard.setElement());
