@@ -90,7 +90,9 @@ class Cell extends BaseElement {
 	fire() {
     //if (this.isShip === true) {
     if (this.isShip) {
+      if (this.state === 'unknown') {
       this.gameboard.score += 1;
+      }
       gameResult.innerHTML = '';
 
       //while (gameResult.firstChild) {
