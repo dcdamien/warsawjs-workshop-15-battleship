@@ -61,12 +61,13 @@ class BaseElement {
 }
 
 class Cell extends BaseElement {
-	constructor({ isShip }) {
+	constructor({ isShip, location, gameboard }) {
 		super();
 		this.isShip = isShip;
     this.location = location;
 		this.state = 'unknown';
 		this.onClick = this.fire;
+    this.gameboard = gameboard;
 	}
 
 	createElement() {
@@ -89,6 +90,15 @@ class Cell extends BaseElement {
 	fire() {
     //if (this.isShip === true) {
     if (this.isShip) {
+      this.gameboard.score += 1;
+      gameResult.innerHTML = '';
+
+      //while (gameResult.firstChild) {
+      //  gameResult.removeChild(gameResult.firstChild);
+      //}
+
+      gameResult.append(`${this.gameboard.score}/${this.gameboard.totalScore}`);
+
       this.setState('hit');
     } else {
       this.setState('miss');
@@ -116,10 +126,12 @@ class Gameboard extends BaseElement {
       for (let columnIndex = 0; columnIndex < this.columnNumber; ++columnIndex) {
         this.cells.push(new Cell({
           isShip: this.fleet.array[rowIndex][columnIndex] === 1,
-          location: [rowIndex, columnIndex]
+          location: [rowIndex, columnIndex],
+          gameboard: this
         }));
       }
     }
+    gameResult.append(`${this.score}/${this.totalScore}`)
 	}
 
 	createElement() {
