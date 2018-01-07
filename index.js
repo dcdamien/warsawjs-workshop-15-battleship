@@ -32,7 +32,6 @@ const gameboardArray = [{
 
 class BaseElement {
   createElement() {
-    console.error('Not implemented');
   }
 
   getElement() {
